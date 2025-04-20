@@ -45,9 +45,9 @@
 
 ## ✅ Step 5: API Integration
 
-- [ ] Build a backend API using Node.js, Flask, Django, or any backend framework to:
+- [x] Build a backend API using Node.js, Flask, Django, or any backend framework to:
   - Fetch all contacts where project_role is not null.
-- [ ] Return the following fields: Name, Email, Phone, Address, Project Role(s).
+- [x] Return the following fields: Name, Email, Phone, Address, Project Role(s).
 
 ---
 
