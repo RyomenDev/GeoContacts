@@ -5,15 +5,15 @@
 ## ✅ Step 1: Set Up
 
 - [x] Create a HubSpot Developer Account: https://developers.hubspot.com
-- [ ] Set up a test app with CRM access.
-- [ ] Connect with HubSpot via API using their sandbox/test account or OAuth/private app API keys.
+- [x] Set up a test app with CRM access.
+- [x] Connect with HubSpot via API using their sandbox/test account or OAuth/private app API keys.
 
 ---
 
 ## ✅ Step 2: Populate Contacts
 
-- [ ] Create 10 contacts in the HubSpot Contacts object.
-- [ ] Each contact should have:
+- [x] Create 10 contacts in the HubSpot Contacts object.
+- [x] Each contact should have:
   - Name
   - Email
   - Phone number
@@ -23,8 +23,8 @@
 
 ## ✅ Step 3: Add Custom Property
 
-- [ ] Check if a property named “Project Role” exists in the Contacts object.
-- [ ] If not present, create a custom multiple select property named project_role with the following options:
+- [x] Check if a property named “Project Role” exists in the Contacts object.
+- [x] If not present, create a custom multiple select property named project_role with the following options:
   - Contractor
   - Home Owner
   - Affiliate
@@ -36,8 +36,8 @@
 
 ## ✅ Step 4: Assign Roles
 
-- [ ] Assign 1–2 roles to each contact.
-- [ ] Ensure that:
+- [x] Assign 1–2 roles to each contact.
+- [x] Ensure that:
   - Some contacts have multiple roles (e.g., both Geo Tech and Home Owner).
   - All roles are represented across your 10 contacts.
 
