@@ -4,7 +4,7 @@ import Contact from "./container/contact.jsx";
 function App() {
   return (
     <>
-      <GoogleMap />
+      {/* <GoogleMap /> */}
       <Contact />
     </>
   );
