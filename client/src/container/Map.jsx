@@ -52,7 +52,6 @@ let contactsData = [
   },
 ];
 
-
 const GoogleMap = () => {
   return (
     <>
