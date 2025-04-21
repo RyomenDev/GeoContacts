@@ -1,6 +1,6 @@
 import ContactComponent from "../component/Contacts";
 
-const Contact = () => {
+const ContactHome = () => {
   return (
     <>
       <div className="">
@@ -10,4 +10,4 @@ const Contact = () => {
   );
 };
 
-export default Contact;
+export default ContactHome;
