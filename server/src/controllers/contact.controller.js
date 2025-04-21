@@ -1,17 +1,18 @@
-import axios from "axios";
-import conf from "../conf.js";
+
+
+import { fetchContactsFromHubSpot } from "../api/index.js";
+import { formatContact } from "../utils/formatContact.js";
 
 export const GetFilteredContacts = async (req, res) => {
   try {
     const { role, country, state, city } = req.query;
-    const HUBSPOT_API_KEY = conf.HUBSPOT_API_KEY;
 
     const filters = [];
 
     if (role) {
       filters.push({
         propertyName: "project_role",
-        operator: "CONTAINS_TOKEN", // More reliable than EQ for multi-role fields
+        operator: "CONTAINS_TOKEN",
         value: role,
       });
     }
@@ -40,18 +41,13 @@ export const GetFilteredContacts = async (req, res) => {
       });
     }
 
-    // Always ensure we're pulling contacts with project_role property
     filters.push({
       propertyName: "project_role",
       operator: "HAS_PROPERTY",
     });
 
     const payload = {
-      filterGroups: [
-        {
-          filters,
-        },
-      ],
+      filterGroups: [{ filters }],
       properties: [
         "firstname",
         "lastname",
@@ -65,48 +61,8 @@ export const GetFilteredContacts = async (req, res) => {
       ],
     };
 
-    const response = await axios.post(
-      "https://api.hubapi.com/crm/v3/objects/contacts/search",
-      payload,
-      {
-        headers: {
-          Authorization: `Bearer ${HUBSPOT_API_KEY}`,
-          "Content-Type": "application/json",
-        },
-      }
-    );
-
-    // Transform and clean up contact data
-    const contacts = response.data.results.map((contact) => {
-      const {
-        firstname,
-        lastname,
-        email,
-        phone,
-        country,
-        state,
-        city,
-        hs_state_code,
-        project_role,
-      } = contact.properties;
-
-      return {
-        name: `${firstname || ""} ${lastname || ""}`.trim(),
-        email: email || "",
-        phone: phone || "",
-        address: {
-          country: country || "",
-          state: state || "",
-          city: city || "",
-          state_code: hs_state_code || "",
-        },
-        project_roles:
-          project_role
-            ?.split(";")
-            .map((r) => r.trim())
-            .filter(Boolean) || [],
-      };
-    });
+    const results = await fetchContactsFromHubSpot(payload);
+    const contacts = results.map(formatContact);
 
     res.json(contacts);
   } catch (error) {
@@ -118,9 +74,7 @@ export const GetFilteredContacts = async (req, res) => {
 export const GetLocationFilters = async (req, res) => {
   try {
     const { country, state } = req.query;
-    // console.log({ country, state });
 
-    const HUBSPOT_API_KEY = conf.HUBSPOT_API_KEY;
     const payload = {
       filterGroups: [
         {
@@ -135,18 +89,7 @@ export const GetLocationFilters = async (req, res) => {
       properties: ["country", "state", "city", "project_role"],
     };
 
-    const response = await axios.post(
-      "https://api.hubapi.com/crm/v3/objects/contacts/search",
-      payload,
-      {
-        headers: {
-          Authorization: `Bearer ${HUBSPOT_API_KEY}`,
-          "Content-Type": "application/json",
-        },
-      }
-    );
-
-    const results = response.data.results;
+    const results = await fetchContactsFromHubSpot(payload);
 
     const allCountries = new Set();
     const allStates = new Set();
@@ -161,8 +104,8 @@ export const GetLocationFilters = async (req, res) => {
       if (project_role) {
         project_role
           .split(";")
-          .filter((r) => r)
-          .forEach((r) => allRoles.add(r));
+          .filter(Boolean)
+          .forEach((r) => allRoles.add(r.trim()));
       }
     });
 

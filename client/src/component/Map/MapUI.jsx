@@ -23,12 +23,14 @@ const MapUI = ({ contacts }) => {
   const [mapLoaded, setMapLoaded] = useState(false);
   const [markers, setMarkers] = useState([]);
   const [error, setError] = useState(null);
+  const [center, setCenter] = useState({ lat: 20.5937, lng: 78.9629 }); // Default India
 
   const handleMapLoad = async (map) => {
     setMapLoaded(true);
     const geocoder = new window.google.maps.Geocoder();
-
     const geocodedMarkers = [];
+
+    let firstValidLatLng = null;
 
     for (const contact of contacts) {
       if (!contact.address) continue;
@@ -39,9 +41,17 @@ const MapUI = ({ contacts }) => {
         if (response.results.length > 0) {
           const { lat, lng } = response.results[0].geometry.location;
 
-          contact.project_roles.forEach((role) => {
+          if (!firstValidLatLng) {
+            firstValidLatLng = { lat: lat(), lng: lng() };
+            setCenter(firstValidLatLng);
+          }
+
+          contact.project_roles.forEach((role, i) => {
             geocodedMarkers.push({
-              position: { lat: lat(), lng: lng() },
+              position: {
+                lat: lat(),
+                lng: lng() + i * 0.0002, // Slightly offset icons side by side
+              },
               label: roleIcons[role] || "📍",
               name: contact.name,
             });
@@ -56,17 +66,12 @@ const MapUI = ({ contacts }) => {
     setMarkers(geocodedMarkers);
   };
 
-  const defaultCenter = {
-    lat: 20.5937,
-    lng: 78.9629,
-  };
-
   return (
     <>
       <GoogleMap
         mapContainerStyle={containerStyle}
-        center={defaultCenter}
-        zoom={3}
+        center={center}
+        zoom={4}
         onLoad={handleMapLoad}
         options={{ gestureHandling: "greedy" }}
       >
@@ -74,6 +79,7 @@ const MapUI = ({ contacts }) => {
           <Marker key={index} position={marker.position} label={marker.label} />
         ))}
       </GoogleMap>
+
       {mapLoaded && (
         <div className="absolute bottom-6 left-6 bg-white bg-opacity-90 shadow-md rounded-md p-3 text-sm z-10">
           <h2 className="font-semibold mb-2">Legend</h2>

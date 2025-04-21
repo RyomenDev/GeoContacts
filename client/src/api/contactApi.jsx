@@ -1,9 +1,7 @@
-
-
-
 import axios from "axios";
 
-const BASE_URL = "http://localhost:3000/api/contacts";
+const SERVER_URL = import.meta.env.VITE_SERVER_URL;
+const BASE_URL = `${SERVER_URL}/api/contacts`;
 
 export const fetchFilterOptions = () => {
   return axios.get(`${BASE_URL}/filters`).then((res) => res.data);
@@ -35,7 +33,6 @@ export const fetchFilteredContacts = (filters) => {
     .get(`${BASE_URL}/filteredContacts/?${params}`)
     .then((res) => res.data);
 };
-
 
 // const MOCK_CONTACTS = [
 //   {
