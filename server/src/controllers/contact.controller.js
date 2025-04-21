@@ -6,7 +6,6 @@ export const GetFilteredContacts = async (req, res) => {
     const { role, country, state, city } = req.query;
     const HUBSPOT_API_KEY = conf.HUBSPOT_API_KEY;
 
-    // Build filters dynamically based on query params
     const filters = [];
 
     if (role) {
@@ -204,71 +203,3 @@ export const GetLocationFilters = async (req, res) => {
     res.status(500).json({ error: "Failed to fetch location filters" });
   }
 };
-
-// export const GetLocationLevels = async (req, res) => {
-//   try {
-//     const { country, state } = req.query;
-//     const HUBSPOT_API_KEY = conf.HUBSPOT_API_KEY;
-
-//     const payload = {
-//       filterGroups: [
-//         {
-//           filters: [
-//             {
-//               propertyName: "project_role",
-//               operator: "HAS_PROPERTY",
-//             },
-//           ],
-//         },
-//       ],
-//       properties: ["country", "state", "city"],
-//     };
-
-//     const response = await axios.post(
-//       "https://api.hubapi.com/crm/v3/objects/contacts/search",
-//       payload,
-//       {
-//         headers: {
-//           Authorization: `Bearer ${HUBSPOT_API_KEY}`,
-//           "Content-Type": "application/json",
-//         },
-//       }
-//     );
-
-//     let results = response.data.results.map((c) => c.properties);
-
-//     if (country) {
-//       results = results.filter(
-//         (c) => c.country && c.country.toLowerCase() === country.toLowerCase()
-//       );
-//     }
-
-//     if (state) {
-//       results = results.filter(
-//         (c) => c.state && c.state.toLowerCase() === state.toLowerCase()
-//       );
-//     }
-
-//     const states = new Set();
-//     const cities = new Set();
-
-//     if (country && !state) {
-//       results.forEach((c) => {
-//         if (c.state) states.add(c.state.trim());
-//       });
-//       return res.json({ states: Array.from(states).sort() });
-//     }
-
-//     if (country && state) {
-//       results.forEach((c) => {
-//         if (c.city) cities.add(c.city.trim());
-//       });
-//       return res.json({ cities: Array.from(cities).sort() });
-//     }
-
-//     res.status(400).json({ error: "Invalid filter level" });
-//   } catch (error) {
-//     console.error("Error fetching filter levels:", error.message);
-//     res.status(500).json({ error: "Failed to fetch filter levels" });
-//   }
-// };
