@@ -1,5 +1,5 @@
-import { GoogleMap } from "@react-google-maps/api";
-import { useEffect, useRef, useState } from "react";
+import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
+import { useState } from "react";
 
 const containerStyle = {
   width: "100%",
@@ -23,27 +23,15 @@ const ShimmerMapLoader = () => (
 
 const MapUI = ({ contacts }) => {
   const [mapLoaded, setMapLoaded] = useState(false);
+  const [markers, setMarkers] = useState([]);
   const [error, setError] = useState(null);
   const [center, setCenter] = useState({ lat: 20.5937, lng: 78.9629 }); 
 
-  const mapRef = useRef(null);
-  const spiderfierRef = useRef(null);
-
   const handleMapLoad = async (map) => {
     setMapLoaded(true);
-    mapRef.current = map;
-
-    const { default: OverlappingMarkerSpiderfier } = await import(
-      "overlapping-marker-spiderfier"
-    );
-
-    spiderfierRef.current = new OverlappingMarkerSpiderfier(map, {
-      markersWontMove: true,
-      markersWontHide: true,
-      keepSpiderfied: true,
-    });
-
     const geocoder = new window.google.maps.Geocoder();
+    const geocodedMarkers = [];
+
     let firstValidLatLng = null;
 
     for (const contact of contacts) {
@@ -60,18 +48,14 @@ const MapUI = ({ contacts }) => {
             setCenter(firstValidLatLng);
           }
 
-          contact.project_roles.forEach((role) => {
-            const marker = new window.google.maps.Marker({
-              position: { lat: lat(), lng: lng() },
+          contact.project_roles.forEach((role, i) => {
+            geocodedMarkers.push({
+              position: {
+                lat: lat(),
+                lng: lng() + i * 0.0002, 
+              },
               label: roleIcons[role] || "📍",
-              map: map,
-              title: `${contact.name} (${role})`,
-            });
-
-            spiderfierRef.current.addMarker(marker);
-
-            marker.addListener("click", () => {
-              window.alert(`${contact.name} - ${role}`);
+              name: contact.name,
             });
           });
         }
@@ -80,6 +64,8 @@ const MapUI = ({ contacts }) => {
         setError(`Error geocoding: ${contact.name}`);
       }
     }
+
+    setMarkers(geocodedMarkers);
   };
 
   return (
@@ -90,7 +76,11 @@ const MapUI = ({ contacts }) => {
         zoom={4}
         onLoad={handleMapLoad}
         options={{ gestureHandling: "greedy" }}
-      />
+      >
+        {markers.map((marker, index) => (
+          <Marker key={index} position={marker.position} label={marker.label} />
+        ))}
+      </GoogleMap>
 
       {mapLoaded && (
         <div className="absolute bottom-6 left-6 bg-white bg-opacity-90 shadow-md rounded-md p-3 text-sm z-10">
