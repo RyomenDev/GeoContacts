@@ -1,5 +1,5 @@
-import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
-import { useState } from "react";
+import { GoogleMap } from "@react-google-maps/api";
+import { useEffect, useRef, useState } from "react";
 
 const containerStyle = {
   width: "100%",
@@ -11,6 +11,8 @@ const roleIcons = {
   geo_tech: "🔺",
   home_owner: "🏠",
   referral_partner: "🤝",
+  affiliate: "📣",
+  community_partner: "🌐",
 };
 
 const ShimmerMapLoader = () => (
@@ -21,15 +23,27 @@ const ShimmerMapLoader = () => (
 
 const MapUI = ({ contacts }) => {
   const [mapLoaded, setMapLoaded] = useState(false);
-  const [markers, setMarkers] = useState([]);
   const [error, setError] = useState(null);
-  const [center, setCenter] = useState({ lat: 20.5937, lng: 78.9629 }); // Default India
+  const [center, setCenter] = useState({ lat: 20.5937, lng: 78.9629 }); 
+
+  const mapRef = useRef(null);
+  const spiderfierRef = useRef(null);
 
   const handleMapLoad = async (map) => {
     setMapLoaded(true);
-    const geocoder = new window.google.maps.Geocoder();
-    const geocodedMarkers = [];
+    mapRef.current = map;
 
+    const { default: OverlappingMarkerSpiderfier } = await import(
+      "overlapping-marker-spiderfier"
+    );
+
+    spiderfierRef.current = new OverlappingMarkerSpiderfier(map, {
+      markersWontMove: true,
+      markersWontHide: true,
+      keepSpiderfied: true,
+    });
+
+    const geocoder = new window.google.maps.Geocoder();
     let firstValidLatLng = null;
 
     for (const contact of contacts) {
@@ -46,14 +60,18 @@ const MapUI = ({ contacts }) => {
             setCenter(firstValidLatLng);
           }
 
-          contact.project_roles.forEach((role, i) => {
-            geocodedMarkers.push({
-              position: {
-                lat: lat(),
-                lng: lng() + i * 0.0002, // Slightly offset icons side by side
-              },
+          contact.project_roles.forEach((role) => {
+            const marker = new window.google.maps.Marker({
+              position: { lat: lat(), lng: lng() },
               label: roleIcons[role] || "📍",
-              name: contact.name,
+              map: map,
+              title: `${contact.name} (${role})`,
+            });
+
+            spiderfierRef.current.addMarker(marker);
+
+            marker.addListener("click", () => {
+              window.alert(`${contact.name} - ${role}`);
             });
           });
         }
@@ -62,8 +80,6 @@ const MapUI = ({ contacts }) => {
         setError(`Error geocoding: ${contact.name}`);
       }
     }
-
-    setMarkers(geocodedMarkers);
   };
 
   return (
@@ -74,11 +90,7 @@ const MapUI = ({ contacts }) => {
         zoom={4}
         onLoad={handleMapLoad}
         options={{ gestureHandling: "greedy" }}
-      >
-        {markers.map((marker, index) => (
-          <Marker key={index} position={marker.position} label={marker.label} />
-        ))}
-      </GoogleMap>
+      />
 
       {mapLoaded && (
         <div className="absolute bottom-6 left-6 bg-white bg-opacity-90 shadow-md rounded-md p-3 text-sm z-10">
@@ -88,6 +100,8 @@ const MapUI = ({ contacts }) => {
             <li>🔺 Geo Tech</li>
             <li>🏠 Home Owner</li>
             <li>🤝 Referral Partner</li>
+            <li>🌐 community partner</li>
+            <li>📣 affiliate</li>
           </ul>
         </div>
       )}
@@ -102,30 +116,3 @@ const MapUI = ({ contacts }) => {
 };
 
 export default MapUI;
-
-{
-  /* <div className="relative p-4">
-      {!mapLoaded && <ShimmerMapLoader />}
-
-      <LoadScript
-        googleMapsApiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}
-        loadingElement={<div className="hidden" />}
-      >
-        <GoogleMap
-          mapContainerStyle={containerStyle}
-          center={defaultCenter}
-          zoom={3}
-          onLoad={handleMapLoad}
-          options={{ gestureHandling: "greedy" }}
-        >
-          {markers.map((marker, index) => (
-            <Marker
-              key={index}
-              position={marker.position}
-              label={marker.label}
-            />
-          ))}
-        </GoogleMap>
-      </LoadScript>
-    </div> */
-}
