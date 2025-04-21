@@ -62,7 +62,43 @@ const MapUI = ({ contacts }) => {
   };
 
   return (
-    <div className="relative p-4">
+    <>
+      <GoogleMap
+        mapContainerStyle={containerStyle}
+        center={defaultCenter}
+        zoom={3}
+        onLoad={handleMapLoad}
+        options={{ gestureHandling: "greedy" }}
+      >
+        {markers.map((marker, index) => (
+          <Marker key={index} position={marker.position} label={marker.label} />
+        ))}
+      </GoogleMap>
+      {mapLoaded && (
+        <div className="absolute bottom-6 left-6 bg-white bg-opacity-90 shadow-md rounded-md p-3 text-sm z-10">
+          <h2 className="font-semibold mb-2">Legend</h2>
+          <ul className="space-y-1">
+            <li>⭐ Contractor</li>
+            <li>🔺 Geo Tech</li>
+            <li>🏠 Home Owner</li>
+            <li>🤝 Referral Partner</li>
+          </ul>
+        </div>
+      )}
+
+      {error && (
+        <div className="absolute bottom-6 right-6 bg-red-100 text-red-700 p-3 rounded-md shadow-md z-10">
+          {error}
+        </div>
+      )}
+    </>
+  );
+};
+
+export default MapUI;
+
+{
+  /* <div className="relative p-4">
       {!mapLoaded && <ShimmerMapLoader />}
 
       <LoadScript
@@ -85,26 +121,5 @@ const MapUI = ({ contacts }) => {
           ))}
         </GoogleMap>
       </LoadScript>
-
-      {mapLoaded && (
-        <div className="absolute bottom-6 left-6 bg-white bg-opacity-90 shadow-md rounded-md p-3 text-sm z-10">
-          <h2 className="font-semibold mb-2">Legend</h2>
-          <ul className="space-y-1">
-            <li>⭐ Contractor</li>
-            <li>🔺 Geo Tech</li>
-            <li>🏠 Home Owner</li>
-            <li>🤝 Referral Partner</li>
-          </ul>
-        </div>
-      )}
-
-      {error && (
-        <div className="absolute bottom-6 right-6 bg-red-100 text-red-700 p-3 rounded-md shadow-md z-10">
-          {error}
-        </div>
-      )}
-    </div>
-  );
-};
-
-export default MapUI;
+    </div> */
+}

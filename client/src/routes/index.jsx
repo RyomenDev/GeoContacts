@@ -12,7 +12,7 @@ const router = createBrowserRouter(
     <Route>
       <Route path="/" element={<Layout />}>
         <Route index element={<Contact />} />
-        <Route path="location" element={<GoogleMap />} />
+        {/* <Route path="location" element={<GoogleMap />} /> */}
       </Route>
     </Route>
   )

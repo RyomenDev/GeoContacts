@@ -1,6 +1,5 @@
 import { UserCircle2, MapPin } from "lucide-react";
 
-
 const ContactCard = ({ contact, handleViewMap, viewMode }) => {
   return (
     <div
@@ -41,13 +40,7 @@ const ContactCard = ({ contact, handleViewMap, viewMode }) => {
 
         <div className="flex justify-center items-center mt-4">
           <button
-            onClick={() =>
-              handleViewMap(
-                contact.address.city,
-                contact.address.state,
-                contact.address.country
-              )
-            }
+            onClick={() => handleViewMap(contact)}
             className="w-full sm:w-auto px-4 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 transition duration-200 transform hover:scale-105 flex items-center gap-2 justify-center"
           >
             <MapPin className="w-4 h-4" />

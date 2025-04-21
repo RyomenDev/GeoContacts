@@ -53,20 +53,20 @@
 
 ## ✅ Step 6: Interactive Map UI
 
-- [ ] Build a web interface using a frontend framework/library (React preferred) to:
+- [x] Build a web interface using a frontend framework/library (React preferred) to:
   - Display contacts on a map (Google Maps, Leaflet, or Mapbox).
-- [ ] Use distinct icons for each project role.
+- [x] Use distinct icons for each project role.
       Example: Contractors = Star, Geo Tech = Triangle, etc.
   - If a contact has multiple roles, show multiple icons at the same location.
-- [ ] Add a legend to explain what each icon represents.
+- [x] Add a legend to explain what each icon represents.
 
 ---
 
 ## ✅ Step 7: Role-Based Filtering
 
-- [ ] Implement UI functionality to:
+- [x] Implement UI functionality to:
       Filter and highlight contacts based on selected project roles and location (region/city/state).
-- [ ] Suggest matches based on filters.
+- [x] Suggest matches based on filters.
       Example: “You can contact Jane Doe in San Diego as a Geo Tech.”
 
 ---

@@ -1,10 +1,15 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import ContactCard from "./ContactCard";
 import { MapPin } from "lucide-react";
+import { GoogleMap } from "../../container";
 
 const ContactList = ({ contacts, loading, error }) => {
   const [viewMode, setViewMode] = useState("grid");
   const [isSmallScreen, setIsSmallScreen] = useState(false);
+  const [showMap, setShowMap] = useState(false);
+
+  // Use useRef to store map data without triggering re-renders
+  const mapDataRef = useRef([]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -16,12 +21,25 @@ const ContactList = ({ contacts, loading, error }) => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const handleViewMap = (city, state, country) => {
-    console.log("View map for:", city, state, country);
+  const handleSetMapData = (contacts) => {
+    const filteredData = contacts.map((contact) => ({
+      name: contact.name,
+      address: `${contact.address.city}, ${contact.address.state}, ${contact.address.country}`,
+      project_roles: contact.project_roles,
+    }));
+    mapDataRef.current = filteredData;
+    // console.log("Map data after setting:", mapDataRef.current);
   };
 
-  const handleViewAllMap = (contacts) => {
-    console.log("View map for:", contacts);
+  const handleViewMap = (contacts) => {
+    // If it's a single contact, convert it into an array
+    const contactsArray = Array.isArray(contacts) ? contacts : [contacts];
+    handleSetMapData(contactsArray);
+    setShowMap(true);
+  };
+
+  const handleShowAllContacts = () => {
+    setShowMap(false);
   };
 
   const currentView = isSmallScreen ? "grid" : viewMode;
@@ -36,11 +54,19 @@ const ContactList = ({ contacts, loading, error }) => {
         <div className="flex items-center gap-3">
           {contacts.length !== 0 && (
             <button
-              onClick={() => handleViewAllMap(contacts)}
+              onClick={() =>
+                showMap ? handleShowAllContacts() : handleViewMap(contacts)
+              }
               className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg shadow hover:bg-blue-700 transition duration-200"
             >
-              <MapPin className="w-5 h-5" />
-              View on Map
+              {showMap ? (
+                <> Show All Contacts</>
+              ) : (
+                <>
+                  <MapPin className="w-5 h-5" />
+                  View on Map
+                </>
+              )}
             </button>
           )}
 
@@ -57,7 +83,9 @@ const ContactList = ({ contacts, loading, error }) => {
         </div>
       </div>
 
-      {loading ? (
+      {showMap ? (
+        <GoogleMap data={mapDataRef.current} />
+      ) : loading ? (
         <div className="text-center text-lg font-semibold text-gray-600">
           Loading...
         </div>

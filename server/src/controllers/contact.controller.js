@@ -119,7 +119,7 @@ export const GetFilteredContacts = async (req, res) => {
 export const GetLocationFilters = async (req, res) => {
   try {
     const { country, state } = req.query;
-    console.log({ country, state });
+    // console.log({ country, state });
 
     const HUBSPOT_API_KEY = conf.HUBSPOT_API_KEY;
     const payload = {

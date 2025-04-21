@@ -21,7 +21,6 @@ const ContactFilter = () => {
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row md:items-start gap-6 p-4  pt-5">
-
       <div className="w-full md:w-1/7 space-y-4">
         <h2 className="text-xl font-semibold text-gray-800">Filter Contacts</h2>
 

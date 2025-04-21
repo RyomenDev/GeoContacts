@@ -4,7 +4,6 @@ import FooterInfo from "../component/Footer/FooterInfo.jsx";
 const Footer = () => {
   return (
     <>
-      <div className="min-h-screen bg-emerald-50" />
       <footer
         className="relative bg-gradient-to-b from-[#33cc99] to-[#27ae60] text-white overflow-hidden"
         id="footerMain"
