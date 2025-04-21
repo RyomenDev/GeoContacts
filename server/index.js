@@ -8,9 +8,9 @@ const ServerPORT = conf.PORT || 3000;
 const startServer = async () => {
   try {
     app.listen(ServerPORT, () => {
-      console.log(
-        `allowed origin is ${conf.CORS_ORIGIN1} and ${conf.CORS_ORIGIN2}`
-      );
+    //   console.log(
+    //     `allowed origin is ${conf.CORS_ORIGIN1} and ${conf.CORS_ORIGIN2}`
+    //   );
 
       console.log(`⚙️ Server is running at port: ${ServerPORT}`);
     });
