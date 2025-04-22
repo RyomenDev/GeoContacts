@@ -7,7 +7,7 @@ const Footer = () => {
     <>
       <footer
         className="relative bg-gradient-to-b from-[#33cc99] to-[#27ae60] text-white overflow-hidden"
-        id="Contact_Section"
+        id="footerMain"
       >
         <div className="absolute top-0 left-0 w-full h-full z-0 opacity-20">
           <img
