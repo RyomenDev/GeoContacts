@@ -52,7 +52,7 @@ const GoogleMap = ({ data }) => {
 
   return (
     <div className="min-h-screen bg-gray-100">
-      {/* <MapUI contacts={mapData} />  */}
+      <MapUI contacts={mapData} /> 
     </div>
   );
 };
