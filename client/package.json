@@ -15,7 +15,6 @@
     "@tailwindcss/vite": "^4.1.4",
     "axios": "^1.8.4",
     "framer-motion": "^12.7.4",
-    "helmet": "^8.1.0",
     "lottie-react": "^2.4.1",
     "lucide-react": "^0.501.0",
     "overlapping-marker-spiderfier": "^1.1.4",
