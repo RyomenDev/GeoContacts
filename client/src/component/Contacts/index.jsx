@@ -39,49 +39,53 @@ const ContactFilter = () => {
             Filter Contacts By Region
           </h2>
 
-          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-1 gap-4">
-            <FilterDropdown
-              label="Country"
-              value={filters.country}
-              onChange={(val) => handleChange("country", val)}
-              options={filterOptions.countries}
-              placeholderCondition={false}
-              placeholderMessage="Select Country"
-            />
+          <div className="">
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-1 gap-4 ">
+              <FilterDropdown
+                label="Country"
+                value={filters.country}
+                onChange={(val) => handleChange("country", val)}
+                options={filterOptions.countries}
+                placeholderCondition={false}
+                placeholderMessage="Select Country"
+              />
 
-            <FilterDropdown
-              label="State"
-              value={filters.state}
-              onChange={(val) => handleChange("state", val)}
-              options={filterOptions.states}
-              placeholderCondition={!filters.country}
-              placeholderMessage="Select Country First"
-            />
+              <FilterDropdown
+                label="State"
+                value={filters.state}
+                onChange={(val) => handleChange("state", val)}
+                options={filterOptions.states}
+                placeholderCondition={!filters.country}
+                placeholderMessage="Select Country First"
+              />
 
-            <FilterDropdown
-              label="City"
-              value={filters.city}
-              onChange={(val) => handleChange("city", val)}
-              options={filterOptions.cities}
-              placeholderCondition={!filters.state}
-              placeholderMessage="Select State First"
-            />
+              <FilterDropdown
+                label="City"
+                value={filters.city}
+                onChange={(val) => handleChange("city", val)}
+                options={filterOptions.cities}
+                placeholderCondition={!filters.state}
+                placeholderMessage="Select State First"
+              />
+            </div>
 
-            <h2 className="text-xl font-semibold text-gray-800">
-              Filter Contacts By Role
-            </h2>
+            <div className="mt-4">
+              <h2 className="text-xl font-semibold text-gray-800">
+                Filter Contacts By Role
+              </h2>
 
-            <FilterDropdown
-              label="Role"
-              value={filters.role}
-              onChange={(val) => handleChange("role", val)}
-              options={filterOptions.roles.map((role) => ({
-                label: formatRole(role),
-                value: role,
-              }))}
-              placeholderCondition={false}
-              placeholderMessage="Select Role"
-            />
+              <FilterDropdown
+                label=""
+                value={filters.role}
+                onChange={(val) => handleChange("role", val)}
+                options={filterOptions.roles.map((role) => ({
+                  label: formatRole(role),
+                  value: role,
+                }))}
+                placeholderCondition={false}
+                placeholderMessage="Select Role"
+              />
+            </div>
           </div>
         </div>
 
@@ -99,3 +103,4 @@ const ContactFilter = () => {
 };
 
 export default ContactFilter;
+
