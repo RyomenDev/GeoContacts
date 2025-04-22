@@ -73,7 +73,7 @@ const HeroSection = () => {
           </p>
           <a
             href="/contacts"
-            className="uppercase text-xs border-b border-white hover:border-emerald-400 transition"
+            className="uppercase text-4xl border-b border-white hover:border-emerald-400 transition"
           >
             Browse Contacts
           </a>
