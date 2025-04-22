@@ -20,14 +20,6 @@ const ContactFilter = () => {
     });
   };
 
-  const formatRole = (role) => {
-    if (!role) return "—";
-    return role
-      .split("_")
-      .map((w) => w[0].toUpperCase() + w.slice(1))
-      .join(" ");
-  };
-
   return (
     <>
       <div className="my-7">
@@ -36,7 +28,7 @@ const ContactFilter = () => {
       <div className="min-h-screen flex flex-col md:flex-row md:items-start gap-6 p-4">
         <div className="w-full md:w-1/7 space-y-4">
           <h2 className="text-xl font-semibold text-gray-800">
-            Filter Contacts By Region
+            Filter Contacts
           </h2>
 
           <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-1 gap-4">
@@ -67,18 +59,11 @@ const ContactFilter = () => {
               placeholderMessage="Select State First"
             />
 
-            <h2 className="text-xl font-semibold text-gray-800">
-              Filter Contacts By Role
-            </h2>
-
             <FilterDropdown
               label="Role"
               value={filters.role}
               onChange={(val) => handleChange("role", val)}
-              options={filterOptions.roles.map((role) => ({
-                label: formatRole(role),
-                value: role,
-              }))}
+              options={filterOptions.roles}
               placeholderCondition={false}
               placeholderMessage="Select Role"
             />
@@ -86,12 +71,7 @@ const ContactFilter = () => {
         </div>
 
         <div className="w-full md:w-full">
-          <ContactList
-            contacts={contacts}
-            loading={loading}
-            error={error}
-            selectedRole={filters.role}
-          />
+          <ContactList contacts={contacts} loading={loading} error={error} />
         </div>
       </div>
     </>

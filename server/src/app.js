@@ -7,27 +7,6 @@ import conf from "./conf.js";
 const app = express();
 app.use(bodyParser.json());
 
-// console.log(conf.CORS_ORIGIN1, conf.CORS_ORIGIN2);
-
-// app.use(
-//   cors({
-//     origin: (origin, callback) => {
-//       const allowedOrigins = [
-//         conf.CORS_ORIGIN1.replace(/\/$/, ""),
-//         conf.CORS_ORIGIN2.replace(/\/$/, ""),
-//         conf.CORS_ORIGIN3.replace(/\/$/, ""),
-//       ];
-//       if (!origin || allowedOrigins.includes(origin)) {
-//         callback(null, true);
-//       } else {
-//         callback(new Error(`Origin ${origin} not allowed by CORS`));
-//       }
-//     },
-//     credentials: true,
-//     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-//   })
-// );
-
 app.use(
   cors({
     origin: (origin, callback) => {
@@ -40,11 +19,11 @@ app.use(
       const cleanedOrigin = origin?.replace(/\/$/, "");
 
       if (!origin || allowedOrigins.includes(cleanedOrigin)) {
-        console.log(
-          `✅ CORS Allowed: ${
-            origin || "undefined (same-origin or non-browser)"
-          }`
-        );
+        // console.log(
+        //   `✅ CORS Allowed: ${
+        //     origin || "undefined (same-origin or non-browser)"
+        //   }`
+        // );
         callback(null, true);
       } else {
         console.warn(`❌ CORS Blocked: ${origin}`);

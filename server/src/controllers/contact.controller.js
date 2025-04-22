@@ -2,7 +2,7 @@ import { fetchContactsFromHubSpot } from "../api/index.js";
 import { formatContact } from "../utils/formatContact.js";
 
 export const GetFilteredContacts = async (req, res) => {
-  console.log("sending filteredContacts");
+  //   console.log("sending filteredContacts");
 
   try {
     const { role, country, state, city } = req.query;
@@ -72,7 +72,7 @@ export const GetFilteredContacts = async (req, res) => {
 };
 
 export const GetLocationFilters = async (req, res) => {
-  console.log("sending LocationFilters");
+  //   console.log("sending LocationFilters");
 
   try {
     const { country, state } = req.query;

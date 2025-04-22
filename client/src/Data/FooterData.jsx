@@ -8,7 +8,10 @@ const FooterData = {
     heading: "GET STARTED",
     description:
       "Join us to explore the vast network of professionals and roles. Start connecting today and explore new opportunities in your field.",
-    buttonText: "JOIN NOW",
+    buttonData:{
+        Text: "JOIN NOW",
+        // Path:"contacts",
+    }
   },
   copyright: {
     text: `© ${new Date().getFullYear()} GeoContacts. All rights reserved. Content on this platform belongs to GeoContacts unless otherwise stated.`,

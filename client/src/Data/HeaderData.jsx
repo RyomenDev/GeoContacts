@@ -2,7 +2,8 @@ const HeaderData = {
   CompanyName: "GeoContacts",
   HeaderOptions: [
     { key: "Home", path: "/" },
-    { key: "Contact", path: "#footerMain" },
+    { key: "Contacts", path: "/contacts" },
+    { key: "About", path: "#footerMain" },
   ],
 };
 
