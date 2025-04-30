@@ -9,9 +9,9 @@ const Layout = () => {
 
   return (
     <>
-      {showHeader && <Header />}
+      {/* {showHeader && <Header />} */}
       <Outlet />
-      {showHeader && <Footer />}
+      {/* {showHeader && <Footer />} */}
     </>
   );
 };
