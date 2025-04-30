@@ -60,7 +60,7 @@ const ContactList = ({ contacts, loading, error, selectedRole }) => {
   return (
     <div className="px-4 sm:px-6 lg:px-8">
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 gap-4">
-        <h2 className="text-3xl font-bold text-gray-800">Matched Contacts</h2>
+        <h2 className="text-3xl font-bold text-gray-800">ProStruct Contacts</h2>
 
         <div className="flex flex-wrap gap-3 items-center">
           {contacts.length > 0 && (
