@@ -36,7 +36,7 @@ const GoogleMap = ({ data }) => {
       <div className="flex flex-col justify-center items-center space-y-2 md:h-96 lg:h-screen h-80">
         <Spinner />
         <p className="text-lg text-gray-600">
-          No contacts available to display on the map
+          Loading...
         </p>
       </div>
     );
