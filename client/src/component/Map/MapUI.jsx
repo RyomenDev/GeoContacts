@@ -1,4 +1,9 @@
-import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
+import {
+  GoogleMap,
+  LoadScript,
+  Marker,
+  InfoWindow,
+} from "@react-google-maps/api";
 import { useState, useEffect } from "react";
 
 const containerStyle = {
@@ -20,16 +25,14 @@ const MapUI = ({ contacts }) => {
   const [markers, setMarkers] = useState([]);
   const [error, setError] = useState(null);
   const [center, setCenter] = useState({ lat: 20.5937, lng: 78.9629 });
+  const [selectedMarker, setSelectedMarker] = useState(null);
 
   useEffect(() => {
-    // console.log("map new contacts:", contacts);
-
     const geocoder = new window.google.maps.Geocoder();
     const geocodedMarkers = [];
     let firstValidLatLng = null;
 
     const geocodeContacts = async () => {
-
       for (const contact of contacts) {
         if (!contact.address) continue;
 
@@ -46,10 +49,12 @@ const MapUI = ({ contacts }) => {
               geocodedMarkers.push({
                 position: {
                   lat: lat(),
-                  lng: lng() + i * 0.0002, 
+                  lng: lng() + i * 0.0002,
                 },
                 label: roleIcons[role] || "📍",
                 name: contact.name,
+                roles: contact.project_roles,
+                address: contact.address,
               });
             });
           }
@@ -63,7 +68,7 @@ const MapUI = ({ contacts }) => {
     };
 
     geocodeContacts();
-  }, [contacts]); 
+  }, [contacts]);
 
   const handleMapLoad = (map) => {
     setMapLoaded(true);
@@ -93,7 +98,6 @@ const MapUI = ({ contacts }) => {
     `;
 
     legendDiv.innerHTML = legendHTML;
-
     map.controls[google.maps.ControlPosition.BOTTOM_RIGHT].push(legendDiv);
   };
 
@@ -110,8 +114,51 @@ const MapUI = ({ contacts }) => {
         }}
       >
         {markers.map((marker, index) => (
-          <Marker key={index} position={marker.position} label={marker.label} />
+          <Marker
+            key={index}
+            position={marker.position}
+            label={marker.label}
+            onClick={() => setSelectedMarker(marker)}
+          />
         ))}
+
+        {/* {selectedMarker && (
+          <InfoWindow
+            position={selectedMarker.position}
+            onCloseClick={() => setSelectedMarker(null)}
+          >
+            <div className="p-2 max-w-xs text-sm">
+              <h3 className="font-semibold mb-1">{selectedMarker.name}</h3>
+              <ul className="text-xs text-gray-700 space-y-1">
+                {selectedMarker.roles.map((role, i) => (
+                  <li key={i}>
+                    {roleIcons[role] || "📍"} {role.replace(/_/g, " ")}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </InfoWindow>
+        )} */}
+        {selectedMarker && (
+          <InfoWindow
+            position={selectedMarker.position}
+            onCloseClick={() => setSelectedMarker(null)}
+          >
+            <div className="p-2 max-w-xs text-sm">
+              <h3 className="font-semibold mb-1">{selectedMarker.name}</h3>
+              <p className="text-gray-600 text-xs mb-1 italic">
+                {selectedMarker.address}
+              </p>{" "}
+              <ul className="text-xs text-gray-700 space-y-1">
+                {selectedMarker.roles.map((role, i) => (
+                  <li key={i}>
+                    {roleIcons[role] || "📍"} {role.replace(/_/g, " ")}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </InfoWindow>
+        )}
       </GoogleMap>
 
       {error && (
@@ -124,4 +171,3 @@ const MapUI = ({ contacts }) => {
 };
 
 export default MapUI;
-

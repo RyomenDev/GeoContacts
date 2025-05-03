@@ -7,7 +7,8 @@ import ShimmerCard from "./ShimmerCard.jsx";
 const ContactList = ({ contacts, loading, error, selectedRole }) => {
   const [viewMode, setViewMode] = useState("grid");
   const [isSmallScreen, setIsSmallScreen] = useState(false);
-  const [showMap, setShowMap] = useState(false);
+  //   const [showMap, setShowMap] = useState(false);
+  const [showMap, setShowMap] = useState(true);
   const [mapData, setMapData] = useState([]);
 
   useEffect(() => {
